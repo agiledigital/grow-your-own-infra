@@ -1,4 +1,4 @@
-![Grow Your Own Infrastructure Logo](images/banner.png "Just Add Toolform!")
+![Grow Your Own Infrastructure Logo](images/banner.jpg "Just Add Toolform!")
 # Grow Your Own Infrastructure
 ## Just Add [Toolform](https://github.com/agiledigital/toolform)!
 

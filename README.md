@@ -2,6 +2,8 @@
 # Grow Your Own Infrastructure
 ## Just Add [Toolform](https://github.com/agiledigital/toolform)!
 
+[![Build Status](https://travis-ci.org/agiledigital/grow-your-own-infra.svg?branch=master)](https://travis-ci.org/agiledigital/grow-your-own-infra)
+
 ### Summary
 
 [Toolform](https://github.com/agiledigital/toolform) is a "DevOps" utility for defining repeatable deployment environments so that applications can be developed independently of their deployment environment.

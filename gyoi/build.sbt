@@ -50,8 +50,11 @@ artifact in (Compile, assembly) := {
 
 addArtifact(artifact in (Compile, assembly), assembly)
 
+lazy val toolform = RootProject(file("../toolform"))
+
 lazy val root = (project in file("."))
   .enablePlugins(BuildInfoPlugin)
+  .dependsOn(toolform)
   .settings(
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
     buildInfoPackage := "au.com.agiledigital.gyoi.version"

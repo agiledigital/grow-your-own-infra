@@ -1,17 +1,40 @@
-sudo: false
+sudo: required
 language: scala
+
+env:
+  - CHANGE_MINIKUBE_NONE_USER=true
+  - KUBECTL_VERSION=1.9.4
+  - MINISHIFT_VERSION=1.14.0
+
 cache:
   directories:
-  - $HOME/.ivy2/cache
-  - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
+
 scala:
-- 2.12.3
+  - 2.12.3
+
 jdk:
-- oraclejdk8
+  - oraclejdk8
+# Thanks: https://blog.travis-ci.com/2017-10-26-running-kubernetes-on-travis-ci-with-minikube
+
+before_script:
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
+      chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+  - curl -Lo minishift-${MINISHIFT_VERSION}-linux-amd64.tgz https://github.com/minishift/minishift/releases/download/v${MINISHIFT_VERSION}/minishift-${MINISHIFT_VERSION}-linux-amd64.tgz && \
+      tar -xzf minishift-${MINISHIFT_VERSION}-linux-amd64.tgz && \
+      chmod +x minishift && sudo mv minishift /usr/local/bin/
+  - sudo minishift start --vm-driver=none --kubernetes-version=v${KUBECTL_VERSION}
+  - minishift update-context
+  - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; \
+      until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
+
 script:
-- sbt clean test
+  - cd gyoi && sbt clean test
+
 #after_success:
 #- '[[ $TRAVIS_BRANCH == "master" ]] && { sbt publish; };'
+
 before_cache:
-- find $HOME/.ivy2 -name "ivydata-*.properties" -delete
-- find $HOME/.sbt -name "*.lock" -delete
+  - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
+  - find $HOME/.sbt -name "*.lock" -delete

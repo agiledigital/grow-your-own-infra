@@ -21,7 +21,7 @@ before_script:
   - chmod +x kubectl && sudo mv kubectl /usr/local/bin/
   - curl -Lo minishift-${MINISHIFT_VERSION}-linux-amd64.tgz https://github.com/minishift/minishift/releases/download/v${MINISHIFT_VERSION}/minishift-${MINISHIFT_VERSION}-linux-amd64.tgz
   - tar -xzf minishift-${MINISHIFT_VERSION}-linux-amd64.tgz
-  - chmod +x minishift && sudo mv minishift /usr/local/bin/
+  - chmod +x minishift-${MINISHIFT_VERSION}-linux-amd64/minishift && sudo mv minishift-${MINISHIFT_VERSION}-linux-amd64/minishift /usr/local/bin/
   - sudo minishift start --vm-driver=none --kubernetes-version=v${KUBECTL_VERSION}
   - minishift update-context
   - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; \
